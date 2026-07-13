@@ -298,10 +298,346 @@ function OcrScanner() {
   );
 }
 
+function PageTitle({ eyebrow, title, description }) {
+  return (
+    <div className="page-title">
+      <span className="eyebrow">{eyebrow}</span>
+      <h1>{title}</h1>
+      <p>{description}</p>
+    </div>
+  );
+}
+
+function LeadTable() {
+  return (
+    <section className="lead-table">
+      <div className="section-head">
+        <div>
+          <span className="eyebrow">Lead Registry</span>
+          <h2>ทะเบียนข้อมูลลูกค้าจากทุกช่องทาง</h2>
+        </div>
+        <button className="ghost"><CalendarDays size={16} /> Export report</button>
+      </div>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ชื่อ</th>
+              <th>แหล่งที่มา</th>
+              <th>สถานะ</th>
+              <th>เวลาตอบ</th>
+              <th>หมายเหตุ</th>
+              <th>นัดหมาย</th>
+              <th>คุณภาพ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leads.map((row) => (
+              <tr key={row.join('-')}>
+                {row.map((cell, index) => <td key={cell} className={index === 2 ? 'status-cell' : ''}>{cell}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
+function DashboardView({ mode, setMode, chartData }) {
+  return (
+    <>
+      <header className="hero premium-hero" style={{ '--hero-image': `url(${heroImage})` }}>
+        <div>
+          <span className="pill"><Sparkles size={15} /> Lead Intelligence Platform</span>
+          <h1>Facebook Lead Quality & Sales Response Analytics</h1>
+          <p>ระบบกลางสำหรับตรวจสอบคุณภาพลีด เวลาตอบกลับของทีมขาย จุดที่ลูกค้าหลุด และผลลัพธ์จากทุกช่องทางอย่างเป็นหลักฐาน.</p>
+          <div className="hero-actions">
+            <button><PlugZap size={18} /> Connect channels</button>
+            <button className="secondary"><Bot size={18} /> Review recommendations</button>
+          </div>
+        </div>
+        <div className="live-card">
+          <span>Average first response</span>
+          <strong>4.8 min</strong>
+          <small>37% faster than last week</small>
+          <div className="sla">
+            <i style={{ width: '82%' }} />
+          </div>
+        </div>
+      </header>
+
+      <section className="connectors">
+        {[
+          ['Facebook Page', 'Read conversation and sender profile name', MessageCircle, 'Ready'],
+          ['TikTok Lead', 'Collect campaign leads for review', Send, 'Planned'],
+          ['LINE OA', 'Follow up and reminder channel', MessageCircle, 'Ready'],
+          ['CRM / CSV', 'Import, clean, and export lead data', Database, 'Supported'],
+        ].map(([title, desc, Icon, status]) => (
+          <article key={title}>
+            <Icon size={22} />
+            <div>
+              <h3>{title}</h3>
+              <p>{desc}</p>
+            </div>
+            <b>{status}</b>
+          </article>
+        ))}
+      </section>
+
+      <section className="kpis">
+        {[
+          ['Total conversations', '500', '+24%', MessageCircle],
+          ['SLA within 5 min', '78%', '+11%', Clock3],
+          ['Qualified leads', '175', '+32%', Users],
+          ['Forecast closings', '25', 'High intent', TrendingUp],
+        ].map(([label, value, change, Icon]) => (
+          <article key={label}>
+            <Icon size={20} />
+            <span>{label}</span>
+            <strong>{value}</strong>
+            <small>{change}</small>
+          </article>
+        ))}
+      </section>
+
+      <section className="proof-strip">
+        <article>
+          <ShieldCheck size={26} />
+          <div>
+            <span className="eyebrow">Marketing Proof</span>
+            <h2>หลักฐานกลางสำหรับตรวจสอบคุณภาพลีด</h2>
+            <p>เก็บแหล่งที่มา ข้อความแรก เวลาตอบกลับ การติดตาม นัดหมาย และคะแนนคุณภาพ เพื่อแยกให้ชัดว่า lead เสียเพราะคุณภาพ หรือหลุดจากกระบวนการขาย.</p>
+          </div>
+        </article>
+        <div className="proof-metrics">
+          <b>82%</b><span>Lead มีข้อมูลสำคัญครบ</span>
+          <b>37</b><span>เคสตอบช้าเกิน SLA</span>
+          <b>18</b><span>เคสไม่ follow up ตามนัด</span>
+        </div>
+      </section>
+
+      <section className="funnel-section">
+        <div className="section-head">
+          <div>
+            <span className="eyebrow">Lead Journey</span>
+            <h2>ภาพรวมลูกค้า 100% ตามสถานะ</h2>
+          </div>
+          <p>ใช้เป็นฐานข้อมูลสำหรับวิเคราะห์คุณภาพและการติดตามของทีมขาย</p>
+        </div>
+        <div className="funnel">
+          {stages.map((stage) => (
+            <article className={`stage ${stage.color}`} key={stage.id}>
+              <b>{stage.id}</b>
+              <h3>{stage.label}</h3>
+              <strong>{stage.count} คน</strong>
+              <span>({stage.percent}%)</span>
+              <p>{stage.note}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="analytics">
+        <div className="report">
+          <div className="section-head compact">
+            <div>
+              <span className="eyebrow">Performance Report</span>
+              <h2>แนวโน้มรายวัน รายสัปดาห์ รายเดือน</h2>
+            </div>
+            <div className="tabs">
+              {['daily', 'weekly', 'monthly'].map((item) => (
+                <button className={mode === item ? 'selected' : ''} onClick={() => setMode(item)} key={item}>
+                  {item === 'daily' ? 'Daily' : item === 'weekly' ? 'Weekly' : 'Monthly'}
+                </button>
+              ))}
+            </div>
+          </div>
+          <MiniChart data={chartData} mode={mode} />
+        </div>
+        <div className="ai-panel">
+          <Activity />
+          <h3>Operational recommendations</h3>
+          <ul>
+            <li>TikTok leads are answered 9 minutes slower than Facebook leads.</li>
+            <li>Leads marked “sent proposal” should be followed up within 24 hours.</li>
+            <li>Campaign budget should be shifted toward high-intent lead sources.</li>
+          </ul>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function LeadsView() {
+  return (
+    <>
+      <PageTitle eyebrow="Lead Management" title="Lead Intake & Quality Control" description="จัดเก็บข้อมูลลูกค้า ตรวจสอบคุณภาพ และระบุจุดที่ลูกค้าหลุดจากกระบวนการขาย." />
+      <section className="bi-workbench">
+        <div className="section-head">
+          <div>
+            <span className="eyebrow">Drop-off Analysis</span>
+            <h2>จำแนกประเภทลูกค้าตามขั้นตอนที่หลุด</h2>
+          </div>
+          <div className="filter-row">
+            <select defaultValue="all">
+              <option value="all">All channels</option>
+              <option>Facebook Ads</option>
+              <option>TikTok Ads</option>
+              <option>LINE OA</option>
+            </select>
+            <select defaultValue="drop">
+              <option value="drop">Drop-off stage</option>
+              <option>ทักแล้วไม่ให้เบอร์</option>
+              <option>ให้เบอร์แต่ไม่นัด</option>
+              <option>นัดแล้วเลื่อน</option>
+            </select>
+          </div>
+        </div>
+        <div className="bi-grid">
+          <form className="lead-form">
+            <h3><PlusCircle size={18} /> Lead intake form</h3>
+            <label>ชื่อ / เบอร์โทร<input placeholder="เช่น คุณสมชาย 09x-xxx-xxxx" /></label>
+            <label>แหล่งที่มา<select><option>Facebook Ads</option><option>TikTok Ads</option><option>LINE OA</option><option>Referral</option></select></label>
+            <label>ขั้นตอนปัจจุบัน<select><option>ทักแชท</option><option>กำลังเจรจา</option><option>นัดหมายแล้ว</option><option>ปิดแล้ว</option><option>Drop-off</option></select></label>
+            <label>บันทึกการติดตาม<textarea placeholder="สรุปความต้องการ งบประมาณ และ next action"></textarea></label>
+            <button type="button">Save lead record</button>
+          </form>
+          <div className="drop-table">
+            {dropOffs.map((item) => (
+              <article key={item.stage}>
+                <div>
+                  <h3>{item.stage}</h3>
+                  <p>{item.reason}</p>
+                </div>
+                <strong>{item.people} คน</strong>
+                <span>{item.owner}</span>
+                <b>{item.impact}</b>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+      <LeadTable />
+    </>
+  );
+}
+
+function SlaView() {
+  return (
+    <>
+      <PageTitle eyebrow="Response SLA" title="Sales Response Monitoring" description="ตรวจสอบเวลาตอบกลับ ความต่อเนื่องในการติดตาม และเคสที่เสี่ยงหลุดจากทีมขาย." />
+      <section className="calendar-plan">
+        <div className="section-head">
+          <div>
+            <span className="eyebrow">Calendar Plan</span>
+            <h2>นัดลูกค้าคุณภาพสูงและระบบเตือนผ่าน LINE</h2>
+          </div>
+          <button className="ghost"><BellRing size={16} /> Configure reminder</button>
+        </div>
+        <div className="calendar-grid">
+          <div className="calendar-card">
+            {appointments.map((item) => (
+              <article key={`${item.date}-${item.name}`} className={item.score > 80 ? 'hot' : ''}>
+                <div className="datebox">
+                  <strong>{item.date}</strong>
+                  <span>{item.day}</span>
+                </div>
+                <div>
+                  <h3>{item.name}</h3>
+                  <p>{item.time} - {item.type}</p>
+                </div>
+                <b>{item.score}%</b>
+              </article>
+            ))}
+          </div>
+          <div className="line-reminder">
+            <MessageCircle />
+            <h3>LINE Reminder Bot</h3>
+            <p>แจ้งเตือนก่อนนัด หลังนัด และบังคับให้บันทึกผลลัพธ์ของแต่ละเคส เพื่อให้ตรวจสอบได้ว่าลีดถูกติดตามครบตามมาตรฐาน.</p>
+            <div className="reminder-bubble">Reminder: คุณ D นัดดูโครงการ 14:00 วันนี้ กรุณาอัปเดตผลหลังจบนัด</div>
+          </div>
+        </div>
+      </section>
+      <DrawingBoard />
+    </>
+  );
+}
+
+function DataSourcesView() {
+  return (
+    <>
+      <PageTitle eyebrow="Data Sources" title="Channel & Data Integration" description="ออกแบบจุดเชื่อมต่อข้อมูลสำหรับ Facebook Page, TikTok, LINE OA และไฟล์ CRM/CSV." />
+      <section className="connectors source-grid">
+        {[
+          ['Facebook Page API', 'อ่านข้อความ ชื่อผู้ส่ง เวลาเริ่มแชท และ metadata ของแคมเปญ', MessageCircle, 'Primary source'],
+          ['Facebook Name Scanner', 'อ่านชื่อบัญชีจากรูป Inbox สำหรับกรณีนำเข้าข้อมูลย้อนหลัง', ScanLine, 'OCR assisted'],
+          ['LINE OA Reminder', 'ส่งแจ้งเตือนนัดหมายและบันทึกผล follow up', BellRing, 'Reminder channel'],
+          ['CSV / CRM Import', 'นำเข้าข้อมูล lead และประวัติการขายจากระบบเดิม', Database, 'Import ready'],
+        ].map(([title, desc, Icon, status]) => (
+          <article key={title}>
+            <Icon size={22} />
+            <div>
+              <h3>{title}</h3>
+              <p>{desc}</p>
+            </div>
+            <b>{status}</b>
+          </article>
+        ))}
+      </section>
+    </>
+  );
+}
+
+function ReportsView({ mode, setMode, chartData }) {
+  return (
+    <>
+      <PageTitle eyebrow="Executive Reports" title="Lead Quality & Sales Accountability" description="รายงานสำหรับผู้บริหาร ใช้ดูคุณภาพลีด จุดหลุด ต้นทางแคมเปญ และประสิทธิภาพทีมขาย." />
+      <section className="analytics">
+        <div className="report">
+          <div className="section-head compact">
+            <div>
+              <span className="eyebrow">Trend</span>
+              <h2>Performance timeline</h2>
+            </div>
+            <div className="tabs">
+              {['daily', 'weekly', 'monthly'].map((item) => (
+                <button className={mode === item ? 'selected' : ''} onClick={() => setMode(item)} key={item}>
+                  {item === 'daily' ? 'Daily' : item === 'weekly' ? 'Weekly' : 'Monthly'}
+                </button>
+              ))}
+            </div>
+          </div>
+          <MiniChart data={chartData} mode={mode} />
+        </div>
+        <div className="ai-panel">
+          <LineChart />
+          <h3>Board summary</h3>
+          <ul>
+            <li>High quality leads remain strong at 82% completeness.</li>
+            <li>Response delay is the main controllable drop-off factor.</li>
+            <li>LINE reminder coverage should be enabled for high-intent appointments.</li>
+          </ul>
+        </div>
+      </section>
+      <LeadTable />
+    </>
+  );
+}
+
 function App() {
   const [mode, setMode] = useState('monthly');
   const [currentUser, setCurrentUser] = useState('');
+  const [activeTab, setActiveTab] = useState('dashboard');
   const chartData = useMemo(() => ({ daily, weekly, monthly })[mode], [mode]);
+  const tabs = [
+    ['dashboard', 'Dashboard', BarChart3],
+    ['leads', 'Leads', Users],
+    ['scanner', 'Name Scanner', ScanLine],
+    ['sla', 'Response SLA', Clock3],
+    ['sources', 'Data Sources', Database],
+    ['reports', 'Reports', FileText],
+  ];
 
   if (!currentUser) {
     return <LoginScreen onLogin={setCurrentUser} />;
@@ -310,261 +646,36 @@ function App() {
   return (
     <main>
       <aside className="sidebar">
-        <div className="brand"><MessageCircle /> ChatOps Lead</div>
+        <div className="brand"><MessageCircle /> Lead-Check</div>
         <nav>
-          <a className="active"><BarChart3 /> Dashboard</a>
-          <a><Users /> Leads</a>
-          <a><ScanLine /> OCR Scanner</a>
-          <a><Clock3 /> Response SLA</a>
-          <a><Database /> Data Sources</a>
-          <a><FileText /> Reports</a>
+          {tabs.map(([id, label, Icon]) => (
+            <button className={activeTab === id ? 'active' : ''} key={id} onClick={() => setActiveTab(id)}>
+              <Icon /> {label}
+            </button>
+          ))}
         </nav>
         <div className="user-panel">
-          <span>Logged in as</span>
+          <span>Workspace</span>
           <strong>{currentUser}</strong>
           <button className="logout" onClick={() => setCurrentUser('')}>ออกจากระบบ</button>
         </div>
       </aside>
 
       <section className="page">
-        <header className="hero" style={{ '--hero-image': `url(${heroImage})` }}>
-          <div>
-            <span className="pill"><Sparkles size={15} /> Mockup ระบบประเมินแชท Admin</span>
-            <h1>วัดผลแชท Facebook Page แล้วแยกลีดเป็น 100%</h1>
-            <p>จำลองระบบดึงข้อความ, จับเวลาตอบกลับ, แยกประเภทลูกค้า, ทำรายงานรายวัน/สัปดาห์/เดือน และเตรียมเชื่อม Facebook, TikTok, LINE OA ในที่เดียว.</p>
-            <div className="hero-actions">
-              <button><PlugZap size={18} /> เชื่อมต่อช่องทาง</button>
-              <button className="secondary"><Bot size={18} /> วิเคราะห์สิ่งที่ควรทำ</button>
-            </div>
-          </div>
-          <div className="live-card">
-            <span>Response SLA วันนี้</span>
-            <strong>4.8 นาที</strong>
-            <small>เร็วขึ้น 37% จากสัปดาห์ก่อน</small>
-            <div className="sla">
-              <i style={{ width: '82%' }} />
-            </div>
-          </div>
-        </header>
-
-        <section className="connectors">
-          {[
-            ['Facebook Page', 'อ่านข้อความ + ชื่อผู้ทัก', MessageCircle, 'พร้อมเชื่อม'],
-            ['TikTok', 'รวม lead จากแคมเปญ', Send, 'รอ API'],
-            ['LINE OA', 'ตามต่อหลังปิดแชท', MessageCircle, 'พร้อมออกแบบ'],
-            ['CRM / Excel', 'นำเข้าไฟล์และ export', Database, 'CSV/XLSX'],
-          ].map(([title, desc, Icon, status]) => (
-            <article key={title}>
-              <Icon size={22} />
-              <div>
-                <h3>{title}</h3>
-                <p>{desc}</p>
-              </div>
-              <b>{status}</b>
-            </article>
-          ))}
-        </section>
-
-        <OcrScanner />
-
-        <section className="kpis">
-          {[
-            ['แชทเข้าเดือนนี้', '500', '+24%', MessageCircle],
-            ['ตอบใน 5 นาที', '78%', '+11%', Clock3],
-            ['Lead คุณภาพสูง', '175', '+32%', Users],
-            ['ยอดคาดการณ์', '25', 'ปิดได้สูง', TrendingUp],
-          ].map(([label, value, change, Icon]) => (
-            <article key={label}>
-              <Icon size={20} />
-              <span>{label}</span>
-              <strong>{value}</strong>
-              <small>{change}</small>
-            </article>
-          ))}
-        </section>
-
-        <section className="proof-strip">
-          <article>
-            <ShieldCheck size={26} />
-            <div>
-              <span className="eyebrow">Marketing Proof</span>
-              <h2>หลักฐานกันคำอ้างว่า Lead ไม่มีคุณภาพ</h2>
-              <p>ทุก lead จะมีแหล่งที่มา, ข้อความแรก, เวลาตอบของเซลล์, จำนวนครั้งที่ follow up, นัดหมาย และคะแนนคุณภาพ เพื่อแยกให้เห็นว่า lead เสียเพราะคุณภาพจริง หรือหลุดเพราะกระบวนการขาย.</p>
-            </div>
-          </article>
-          <div className="proof-metrics">
-            <b>82%</b><span>Lead มีเบอร์/งบ/ความต้องการครบ</span>
-            <b>37</b><span>เคสตอบช้าเกิน SLA</span>
-            <b>18</b><span>เคสเซลล์ไม่ follow up ตามนัด</span>
-          </div>
-        </section>
-
-        <section className="funnel-section">
-          <div className="section-head">
-            <div>
-              <span className="eyebrow">Lead Journey</span>
-              <h2>ลูกค้า 100% แยกตามสถานะ</h2>
-            </div>
-            <p>ส่งข้อมูลทุกวันเพื่อให้ทีมการตลาดวิเคราะห์และต่อยอด</p>
-          </div>
-          <div className="funnel">
-            {stages.map((stage) => (
-              <article className={`stage ${stage.color}`} key={stage.id}>
-                <b>{stage.id}</b>
-                <h3>{stage.label}</h3>
-                <strong>{stage.count} คน</strong>
-                <span>({stage.percent}%)</span>
-                <p>{stage.note}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="bi-workbench">
-          <div className="section-head">
-            <div>
-              <span className="eyebrow">BI Workbench</span>
-              <h2>แยกประเภทลูกค้าตาม Drop-off</h2>
-            </div>
-            <div className="filter-row">
-              <select defaultValue="all">
-                <option value="all">ทุกช่องทาง</option>
-                <option>Facebook Ads</option>
-                <option>TikTok Ads</option>
-                <option>LINE OA</option>
-              </select>
-              <select defaultValue="drop">
-                <option value="drop">จุดที่หลุด</option>
-                <option>ทักแล้วไม่ให้เบอร์</option>
-                <option>ให้เบอร์แต่ไม่นัด</option>
-                <option>นัดแล้วเลื่อน</option>
-              </select>
-            </div>
-          </div>
-          <div className="bi-grid">
-            <form className="lead-form">
-              <h3><PlusCircle size={18} /> กรอกข้อมูลลูกค้าในตัว</h3>
-              <label>ชื่อ / เบอร์โทร<input placeholder="เช่น คุณสมชาย 09x-xxx-xxxx" /></label>
-              <label>แหล่งที่มา<select><option>Facebook Ads</option><option>TikTok Ads</option><option>LINE OA</option><option>Referral</option></select></label>
-              <label>ขั้นตอนปัจจุบัน<select><option>ทักแชท</option><option>กำลังเจรจา</option><option>นัดหมายแล้ว</option><option>ปิดแล้ว</option><option>Drop-off</option></select></label>
-              <label>สาเหตุ / หมายเหตุ<textarea placeholder="เช่น สนใจจริง แต่ต้องคุยกับแฟนก่อน"></textarea></label>
-              <button type="button">บันทึก Lead</button>
-            </form>
-            <div className="drop-table">
-              {dropOffs.map((item) => (
-                <article key={item.stage}>
-                  <div>
-                    <h3>{item.stage}</h3>
-                    <p>{item.reason}</p>
-                  </div>
-                  <strong>{item.people} คน</strong>
-                  <span>{item.owner}</span>
-                  <b>{item.impact}</b>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="analytics">
-          <div className="report">
-            <div className="section-head compact">
-              <div>
-                <span className="eyebrow">Reports</span>
-                <h2>รายงานแยกช่วงเวลา</h2>
-              </div>
-              <div className="tabs">
-                {['daily', 'weekly', 'monthly'].map((item) => (
-                  <button className={mode === item ? 'selected' : ''} onClick={() => setMode(item)} key={item}>
-                    {item === 'daily' ? 'วัน' : item === 'weekly' ? 'สัปดาห์' : 'เดือน'}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <MiniChart data={chartData} mode={mode} />
-          </div>
-          <div className="ai-panel">
-            <Activity />
-            <h3>Tap วิเคราะห์สิ่งที่ควรทำ</h3>
-            <ul>
-              <li>แชทจาก TikTok ตอบช้ากว่า Facebook เฉลี่ย 9 นาที</li>
-              <li>กลุ่ม “ส่งแบบบ้านแล้ว” ควร follow up ใน 24 ชั่วโมง</li>
-              <li>งบโฆษณาควรโยกไปแคมเปญที่ได้ lead คุณภาพสูง</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="calendar-plan">
-          <div className="section-head">
-            <div>
-              <span className="eyebrow">Calendar Plan</span>
-              <h2>นัดลูกค้าคุณภาพสูง + เตือนผ่าน LINE</h2>
-            </div>
-            <button className="ghost"><BellRing size={16} /> ตั้งเตือน LINE</button>
-          </div>
-          <div className="calendar-grid">
-            <div className="calendar-card">
-              {appointments.map((item) => (
-                <article key={`${item.date}-${item.name}`} className={item.score > 80 ? 'hot' : ''}>
-                  <div className="datebox">
-                    <strong>{item.date}</strong>
-                    <span>{item.day}</span>
-                  </div>
-                  <div>
-                    <h3>{item.name}</h3>
-                    <p>{item.time} - {item.type}</p>
-                  </div>
-                  <b>{item.score}%</b>
-                </article>
-              ))}
-            </div>
-            <div className="line-reminder">
-              <MessageCircle />
-              <h3>LINE Reminder Bot</h3>
-              <p>แจ้งเตือนเซลล์ก่อนนัด 1 วัน, ก่อนนัด 1 ชั่วโมง และหลังนัดเพื่อบันทึกผล เช่น มาตามนัด/เลื่อน/ไม่รับสาย/ปิดการขาย.</p>
-              <div className="reminder-bubble">
-                แจ้งเตือน: คุณ D นัดดูโครงการ 14:00 วันนี้ กรุณาอัปเดตผลหลังจบนัด
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <DrawingBoard />
-
-        <section className="lead-table">
-          <div className="section-head">
-            <div>
-              <span className="eyebrow">Lead Table</span>
-              <h2>ข้อมูลที่ต้องเก็บจากทุกช่องทาง</h2>
-            </div>
-            <button className="ghost"><CalendarDays size={16} /> ส่งรายงานทุกวัน</button>
-          </div>
-          <div className="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>ชื่อ</th>
-                  <th>แหล่งที่มา</th>
-                  <th>สถานะ</th>
-                  <th>เวลาตอบ</th>
-                  <th>หมายเหตุ</th>
-                  <th>นัดหมาย</th>
-                  <th>คุณภาพ</th>
-                </tr>
-              </thead>
-              <tbody>
-                {leads.map((row) => (
-                  <tr key={row.join('-')}>
-                    {row.map((cell, index) => <td key={cell} className={index === 2 ? 'status-cell' : ''}>{cell}</td>)}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
+        {activeTab === 'dashboard' && <DashboardView mode={mode} setMode={setMode} chartData={chartData} />}
+        {activeTab === 'leads' && <LeadsView />}
+        {activeTab === 'scanner' && (
+          <>
+            <PageTitle eyebrow="Facebook Name Scanner" title="Extract Facebook names from inbox screenshots" description="อัปโหลดภาพรายชื่อแชทเพื่ออ่านชื่อบัญชี Facebook และส่งต่อเข้าระบบ lead intake." />
+            <OcrScanner />
+          </>
+        )}
+        {activeTab === 'sla' && <SlaView />}
+        {activeTab === 'sources' && <DataSourcesView />}
+        {activeTab === 'reports' && <ReportsView mode={mode} setMode={setMode} chartData={chartData} />}
 
         <footer>
-          <CheckCircle2 size={18} /> Mockup นี้สามารถต่อเป็นระบบจริงได้ โดยต้องขอสิทธิ์ API, webhook, storage และ policy การเก็บข้อมูลลูกค้าให้ถูกต้อง.
+          <CheckCircle2 size={18} /> Lead-Check template: designed for chat performance, lead quality, and sales accountability workflows.
         </footer>
       </section>
     </main>
