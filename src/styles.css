@@ -19,7 +19,7 @@ main {
   align-items: stretch;
   background:
     linear-gradient(120deg, rgba(14, 23, 41, 0.94), rgba(37, 99, 235, 0.76)),
-    url('/upload/image(159).png') center/cover;
+    var(--hero-image) center/cover;
   color: white;
   padding: 24px;
   gap: 24px;
@@ -190,7 +190,7 @@ nav a.active, nav a:hover {
   align-items: center;
   background:
     linear-gradient(110deg, rgba(15, 23, 42, 0.94), rgba(37, 99, 235, 0.75)),
-    url('/upload/image(159).png') center/cover;
+    var(--hero-image) center/cover;
   overflow: hidden;
 }
 

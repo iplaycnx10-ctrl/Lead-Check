@@ -28,6 +28,7 @@ import {
   Users,
 } from 'lucide-react';
 import './styles.css';
+import heroImage from '../upload/image(159).png';
 import sampleInbox from '../upload/image(160).png';
 
 const stages = [
@@ -92,7 +93,7 @@ function LoginScreen({ onLogin }) {
   };
 
   return (
-    <main className="login-shell">
+    <main className="login-shell" style={{ '--hero-image': `url(${heroImage})` }}>
       <section className="login-hero">
         <span className="pill"><ShieldCheck size={15} /> Secure ChatOps</span>
         <h1>เข้าสู่ระบบก่อนดูข้อมูล Lead และผลตอบแชท</h1>
@@ -326,7 +327,7 @@ function App() {
       </aside>
 
       <section className="page">
-        <header className="hero">
+        <header className="hero" style={{ '--hero-image': `url(${heroImage})` }}>
           <div>
             <span className="pill"><Sparkles size={15} /> Mockup ระบบประเมินแชท Admin</span>
             <h1>วัดผลแชท Facebook Page แล้วแยกลีดเป็น 100%</h1>
