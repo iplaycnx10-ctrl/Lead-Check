@@ -1,11 +1,13 @@
 import React from 'react';
 import { BellRing, Database, MessageCircle, ScanLine } from 'lucide-react';
 import { PageTitle } from '../components/PageTitle.jsx';
+import { ApiConnectorPanel } from '../components/ApiConnectorPanel.jsx';
 
 export function DataSources() {
   return (
     <>
       <PageTitle eyebrow="Source system" title="Data source and integration design" description="Prepare each ingestion path as a modular connector so future API, CSV, and reminder workflows can be maintained independently." />
+      <ApiConnectorPanel />
       <section className="source-strip source-grid">
         {[
           ['Facebook Page API', 'Conversation, sender profile, timestamp, campaign metadata', MessageCircle],

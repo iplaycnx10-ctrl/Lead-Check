@@ -45,3 +45,33 @@ export const scannedLeads = [
 export const daily = [72, 95, 88, 114, 132, 125, 156, 148, 176, 169, 201, 188];
 export const weekly = [420, 510, 610, 580, 720, 790, 860, 920];
 export const monthly = [1200, 1480, 1690, 1930, 2280, 2470, 2650, 2910];
+
+export const apiConnectors = [
+  {
+    id: 'facebook',
+    name: 'Facebook Page API',
+    status: 'Ready for backend',
+    endpoint: '/api/connectors/facebook/webhook',
+    fields: ['Page ID', 'App ID', 'App Secret', 'Page Access Token'],
+    scopes: ['pages_messaging', 'pages_read_engagement', 'leads_retrieval'],
+    objects: ['Conversation', 'Sender profile', 'Message timestamp', 'Campaign source'],
+  },
+  {
+    id: 'tiktok',
+    name: 'TikTok Lead API',
+    status: 'OAuth required',
+    endpoint: '/api/connectors/tiktok/sync',
+    fields: ['Advertiser ID', 'App ID', 'Client Key', 'Client Secret'],
+    scopes: ['Lead retrieval', 'Campaign read', 'Ad group read'],
+    objects: ['Lead form', 'Campaign', 'Ad group', 'Submitted lead'],
+  },
+  {
+    id: 'line',
+    name: 'LINE OA Messaging API',
+    status: 'Reminder channel',
+    endpoint: '/api/connectors/line/webhook',
+    fields: ['Channel ID', 'Channel Secret', 'Channel Access Token'],
+    scopes: ['Push message', 'Webhook events', 'Profile read'],
+    objects: ['Appointment reminder', 'Follow-up status', 'Sales notification'],
+  },
+];
